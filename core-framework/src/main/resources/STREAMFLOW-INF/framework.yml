@@ -58,22 +58,3 @@ components:
     inputs: 
       - key: default
         description: Generic
-
-  - name: invoke-service
-    label: Invoke Service
-    type: storm-bolt
-    description: Transforms a tuple by passing it to a http service
-    mainClass: com.elasticm2m.frameworks.core.InvokeService
-    properties:
-      - name: endpoint
-        label: Service endpoint URL
-        type: string
-        description: The HTTP URL for the service endpoint.
-        required: true
-    inputs:
-      - key: default
-        description: Generic
-    outputs:
-      - key: default
-        description: Generic
-
