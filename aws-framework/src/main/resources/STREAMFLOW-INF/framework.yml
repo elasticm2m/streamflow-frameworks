@@ -3,22 +3,6 @@ label: AWS Framework
 version: ${project.version}
 description: Spouts and Bolts used to integrate with various AWS products
 
-resources:
-    
-  - name: configuration-resource
-    label: Configuration Resource
-    description: Provides a generic block of configuration that should be TypeSafe compatible
-    resourceClass: com.elasticm2m.frameworks.http.ConfigurationResource
-    properties:
-      - name: config-data
-        label: Configuration Data
-        type: textarea
-        description: Block of configuration to inject into spouts and bolts
-        defaultValue:
-        required: true
-        options:
-            numRows: 15
-
 components:
 
   - name: aws-kinesis-spout
