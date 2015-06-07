@@ -22,3 +22,18 @@ components:
     outputs:
       - key: default
         description: Generic
+
+  - name: sse-spout
+    label: SSE Spout
+    type: storm-spout
+    description: Transforms a tuple by passing it to a http service
+    mainClass: com.elasticm2m.frameworks.core.ServerSentEventSource
+    properties:
+      - name: endpoint
+        label: Service endpoint URL
+        type: string
+        description: The HTTP URL for the service endpoint.
+        required: true
+    outputs:
+      - key: default
+        description: Generic
