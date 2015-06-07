@@ -39,20 +39,7 @@
         <module>core-framework</module>
         <module>http-framework</module>
     </modules>
-    
-    <distributionManagement>
-        <repository>
-            <id>elasticm2m-release</id>
-            <name>libs-release</name>
-            <url>http://artifactory.elasticm2m.com:8081/artifactory/libs-release-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>elasticm2m-snapshot</id>
-            <name>libs-snapshot</name>
-            <url>http://artifactory.elasticm2m.com:8081/artifactory/libs-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
-    
+
     <repositories>
         <repository>
             <id>clojars.org</id>
