@@ -1,6 +1,6 @@
-package com.elasticm2m.frameworks.core.config;
+package com.elasticm2m.frameworks.http.config;
 
-import com.elasticm2m.frameworks.core.ConfigurationResource;
+import com.elasticm2m.frameworks.http.ConfigurationResource;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;

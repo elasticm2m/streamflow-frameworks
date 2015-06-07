@@ -1,4 +1,4 @@
-package com.elasticm2m.frameworks.core;
+package com.elasticm2m.frameworks.http;
 
 import com.elasticm2m.frameworks.common.base.ElasticBaseResource;
 import com.google.inject.Inject;

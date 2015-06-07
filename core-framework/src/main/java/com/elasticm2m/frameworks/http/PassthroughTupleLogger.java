@@ -1,4 +1,4 @@
-package com.elasticm2m.frameworks.core;
+package com.elasticm2m.frameworks.http;
 
 import backtype.storm.tuple.Tuple;
 import com.elasticm2m.frameworks.common.base.ElasticBaseRichBolt;

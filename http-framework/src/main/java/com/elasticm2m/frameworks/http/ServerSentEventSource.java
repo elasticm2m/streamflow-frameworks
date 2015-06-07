@@ -1,4 +1,4 @@
-package com.elasticm2m.frameworks.core;
+package com.elasticm2m.frameworks.http;
 
 import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.TopologyContext;
