@@ -23,7 +23,7 @@ components:
 
   - name: random-sentence-generator
     label: Random Sentence Generator
-    type: storm-bolt
+    type: storm-spout
     description: Produces a random sentence at a configurable rate
     mainClass: com.elasticm2m.frameworks.core.RandomSentenceGenerator
     properties:
@@ -33,9 +33,9 @@ components:
         description: Delay between tuples in milliseconds
         defaultValue: 100
         required: false
-    inputs:
-      - key: default
-        description: Generic
+    outputs:
+       - key: default
+         description: Generic
 
   - name: passthrough-tuple-logger
     label: Passthrough Tuple Logger
@@ -49,7 +49,17 @@ components:
     outputs: 
       - key: default
         description: Generic
-        
+
+  - name: terminal-tuple-logger
+    label: Terminal Tuple Logger
+    type: storm-bolt
+    description: Prints tuple body data to the logger
+    mainClass: com.elasticm2m.frameworks.core.TerminalTupleLogger
+    properties: []
+    inputs:
+      - key: default
+        description: Generic
+
   - name: tuple-replicator
     label: Tuple Replicator
     type: storm-bolt

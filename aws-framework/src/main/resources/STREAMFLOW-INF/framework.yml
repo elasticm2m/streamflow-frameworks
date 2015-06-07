@@ -5,7 +5,7 @@ description: Spouts and Bolts used to integrate with various AWS products
 
 components:
 
-  - name: aws-kinesis-spout
+   - name: aws-kinesis-spout
      label: Kinesis Reader
      type: storm-spout
      description: Reads data from the specified Kinesis stream
