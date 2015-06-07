@@ -38,35 +38,33 @@ public class KinesisReader extends ElasticBaseRichSpout {
         this.streamName = streamName;
     }
 
-    @Inject(optional=true)
+    @Inject(optional = true)
     public void setInitialPosition(@Named("kinesis-initial-position") String initialPosition) {
         this.initialPosition = initialPosition;
     }
 
-    @Inject(optional=true)
+    @Inject(optional = true)
     public void setIsReliable(@Named("is-reliable") boolean isReliable) {
         this.isReliable = isReliable;
     }
 
-    /*
-    @Inject
+    @Inject(optional = true)
     public void setCredentialsProvider(AWSCredentialsProvider credentialsProvider) {
         this.credentialsProvider = credentialsProvider;
     }
-    */
 
     @Override
     public void open(Map conf, TopologyContext topologyContext, SpoutOutputCollector collector) {
         super.open(conf, topologyContext, collector);
-        
+
         logger.info("Kinesis Reader: Stream Name = " + streamName
                 + ", Application Name = " + applicationName
                 + ", Initial Position = " + initialPosition
                 + ", Is Reliable = " + isReliable);
-        
+
         // Use the default credentials provider 
         credentialsProvider = new DefaultAWSCredentialsProviderChain();
-        
+
         processingService = new ProcessingService(
                 credentialsProvider, queue, applicationName, streamName,
                 InitialPositionInStream.valueOf(initialPosition), logger);
@@ -103,7 +101,7 @@ public class KinesisReader extends ElasticBaseRichSpout {
     public void close() {
         processingService.stopAsync();
         processingService.awaitTerminated();
-        
+
         logger.info("Kinesis Reader Spout Stopped");
     }
 }

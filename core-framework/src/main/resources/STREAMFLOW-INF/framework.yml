@@ -21,6 +21,22 @@ resources:
 
 components:
 
+  - name: random-sentence-generator
+    label: Random Sentence Generator
+    type: storm-bolt
+    description: Produces a random sentence at a configurable rate
+    mainClass: com.elasticm2m.frameworks.core.RandomSentenceGenerator
+    properties:
+      - name: sleep-millis
+        label: Sleep (ms)
+        type: integer
+        description: Delay between tuples in milliseconds
+        defaultValue: 100
+        required: false
+    inputs:
+      - key: default
+        description: Generic
+
   - name: passthrough-tuple-logger
     label: Passthrough Tuple Logger
     type: storm-bolt
