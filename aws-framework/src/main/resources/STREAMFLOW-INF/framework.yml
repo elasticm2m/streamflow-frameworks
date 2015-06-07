@@ -1,0 +1,122 @@
+name: aws-framework
+label: AWS Framework
+version: ${project.version}
+description: Spouts and Bolts used to integrate with various AWS products
+
+resources:
+    
+  - name: configuration-resource
+    label: Configuration Resource
+    description: Provides a generic block of configuration that should be TypeSafe compatible
+    resourceClass: com.elasticm2m.frameworks.http.ConfigurationResource
+    properties:
+      - name: config-data
+        label: Configuration Data
+        type: textarea
+        description: Block of configuration to inject into spouts and bolts
+        defaultValue:
+        required: true
+        options:
+            numRows: 15
+
+components:
+
+  - name: aws-kinesis-spout
+     label: Kinesis Reader
+     type: storm-spout
+     description: Reads data from the specified Kinesis stream
+     mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisReader
+     icon: icons/aws.png
+     properties:
+       - name: kinesis-application-name
+         label: Application Name
+         type: text
+         description: Name of the application
+         defaultValue:
+         required: true
+       - name: kinesis-stream-name
+         label: Stream Name
+         type: text
+         description: Kinesis stream to process records from
+         defaultValue:
+         required: true
+       - name: kinesis-initial-position
+         label: Initial Position
+         type: select
+         description: Initial position to use when reading from the stream.
+         defaultValue: TRIM_HORIZON
+         required: true
+         options:
+             listItems:
+               - TRIM_HORIZON
+               - LATEST
+       - name: is-reliable
+         label: Is Reliable
+         type: boolean
+         description: Determines if the stream is reliable and only deletes fully processed messages
+         defaultValue: false
+     outputs:
+       - key: default
+         description: Generic
+
+   - name: aws-kinesis-bolt
+     label: Kinesis Writer
+     type: storm-bolt
+     description: Writes data to the specified Kinesis stream
+     mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisWriter
+     icon: icons/aws.png
+     properties:
+       - name: kinesis-stream-name
+         label: Stream Name
+         type: text
+         description: Kinesis stream to push records to
+         defaultValue:
+         required: true
+       - name: kinesis-partition-key
+         label: Partition Key
+         type: text
+         description: Kinesis stream to process records from
+         defaultValue:
+         required: true
+     inputs:
+       - key: default
+         description: Generic
+
+   - name: aws-sqs-spout
+     label: SQS Reader
+     type: storm-spout
+     description: Reads data from the specified SQS queue
+     mainClass: com.elasticm2m.frameworks.aws.sqs.SqsReader
+     icon: icons/aws.png
+     properties:
+       - name: sqs-queue-url
+         label: SQS Queue URL
+         type: text
+         description: The URL of the SQS queue to read from
+         defaultValue:
+         required: true
+       - name: sqs-reliable
+         label: Is Reliable
+         type: boolean
+         description: Determines if the queue is reliable and only deletes fully processed messages
+         defaultValue: true
+     outputs:
+       - key: default
+         description: Generic
+
+   - name: aws-sqs-bolt
+     label: SQS Writer
+     type: storm-bolt
+     description: Writes data to the specified SQS queue
+     mainClass: com.elasticm2m.frameworks.aws.sqs.SqsWriter
+     icon: icons/aws.png
+     properties:
+       - name: sqs-queue-url
+         label: SQS Queue URL
+         type: text
+         description: The URL of the SQS queue to read from
+         defaultValue:
+         required: true
+     inputs:
+       - key: default
+         description: Generic

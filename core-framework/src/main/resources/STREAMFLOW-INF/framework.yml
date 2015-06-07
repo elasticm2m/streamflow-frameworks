@@ -1,0 +1,79 @@
+name: core-framework
+label: Core Framework
+version: ${project.version}
+description: Spouts and Bolts used to handle event processing
+
+resources:
+
+  - name: configuration-resource
+    label: Configuration Resource
+    description: Provides a generic block of configuration that should be TypeSafe compatible
+    resourceClass: com.elasticm2m.frameworks.http.ConfigurationResource
+    properties:
+      - name: config-data
+        label: Configuration Data
+        type: textarea
+        description: Block of configuration to inject into spouts and bolts
+        defaultValue:
+        required: true
+        options:
+            numRows: 15
+
+components:
+
+  - name: passthrough-tuple-logger
+    label: Passthrough Tuple Logger
+    type: storm-bolt
+    description: Prints tuple event data to the logger
+    mainClass: com.elasticm2m.frameworks.http.PassthroughTupleLogger
+    properties: []
+    inputs: 
+      - key: default
+        description: Generic
+    outputs: 
+      - key: default
+        description: Generic
+        
+  - name: tuple-replicator
+    label: Tuple Replicator
+    type: storm-bolt
+    description: Replicates input tuple stream into multiple output tuple streams
+    mainClass: com.elasticm2m.frameworks.http.TupleReplicator
+    properties: []
+    inputs: 
+      - key: default
+        description: Generic
+    outputs: 
+      - key: primary
+        description: Generic
+      - key: secondary
+        description: Generic
+        
+  - name: noop
+    label: Noop
+    type: storm-bolt
+    description: Consumes tuple data without peforming additional actions
+    mainClass: com.elasticm2m.frameworks.http.Noop
+    properties: []
+    inputs: 
+      - key: default
+        description: Generic
+
+  - name: invoke-service
+    label: Invoke Service
+    type: storm-bolt
+    description: Transforms a tuple by passing it to a http service
+    mainClass: com.elasticm2m.frameworks.http.InvokeService
+    properties:
+      - name: endpoint
+        label: Service endpoint URL
+        type: string
+        description: The HTTP URL for the service endpoint.
+        required: true
+    inputs:
+      - key: default
+        description: Generic
+    outputs:
+      - key: default
+        description: Generic
+
