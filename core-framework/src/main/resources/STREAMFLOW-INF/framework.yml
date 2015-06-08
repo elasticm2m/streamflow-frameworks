@@ -8,7 +8,7 @@ resources:
   - name: configuration-resource
     label: Configuration Resource
     description: Provides a generic block of configuration that should be TypeSafe compatible
-    resourceClass: com.elasticm2m.frameworks.http.ConfigurationResource
+    resourceClass: com.elasticm2m.frameworks.core.ConfigurationResource
     properties:
       - name: config-data
         label: Configuration Data
@@ -25,7 +25,7 @@ components:
     label: Random Sentence Generator
     type: storm-spout
     description: Produces a random sentence at a configurable rate
-    mainClass: com.elasticm2m.frameworks.http.RandomSentenceGenerator
+    mainClass: com.elasticm2m.frameworks.core.RandomSentenceGenerator
     properties:
       - name: sleep-millis
         label: Sleep (ms)
@@ -41,7 +41,7 @@ components:
     label: Passthrough Tuple Logger
     type: storm-bolt
     description: Prints tuple event data to the logger
-    mainClass: com.elasticm2m.frameworks.http.PassthroughTupleLogger
+    mainClass: com.elasticm2m.frameworks.core.PassthroughTupleLogger
     properties: []
     inputs: 
       - key: default
@@ -54,7 +54,7 @@ components:
     label: Terminal Tuple Logger
     type: storm-bolt
     description: Prints tuple body data to the logger
-    mainClass: com.elasticm2m.frameworks.http.TerminalTupleLogger
+    mainClass: com.elasticm2m.frameworks.core.TerminalTupleLogger
     properties: []
     inputs:
       - key: default
@@ -64,7 +64,7 @@ components:
     label: Tuple Replicator
     type: storm-bolt
     description: Replicates input tuple stream into multiple output tuple streams
-    mainClass: com.elasticm2m.frameworks.http.TupleReplicator
+    mainClass: com.elasticm2m.frameworks.core.TupleReplicator
     properties: []
     inputs: 
       - key: default
@@ -79,7 +79,7 @@ components:
     label: Noop
     type: storm-bolt
     description: Consumes tuple data without peforming additional actions
-    mainClass: com.elasticm2m.frameworks.http.Noop
+    mainClass: com.elasticm2m.frameworks.core.Noop
     properties: []
     inputs: 
       - key: default

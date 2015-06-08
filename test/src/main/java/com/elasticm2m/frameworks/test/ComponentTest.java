@@ -54,7 +54,7 @@ public abstract class ComponentTest<T> {
             modules = new ArrayList<>();
         }
         
-        // Initialize the http module used to provide common functionality for all components
+        // Initialize the core module used to provide common functionality for all components
         modules.add(new AbstractModule() {
             @Override
             protected void configure() {
