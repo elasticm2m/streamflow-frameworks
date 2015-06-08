@@ -29,7 +29,7 @@ public class KinesisReaderTest extends Assert {
     public static KinesisReader createSpout() {
         KinesisReader result = new KinesisReader();
         result.setLogger(LoggerFactory.getLogger(KinesisReader.class));
-        result.setApplicationName("aws-framework-unit-test");
+        result.setApplicationName("core-framework-unit-test");
         result.setStreamName("pre-process");
         result.setInitialPosition(InitialPositionInStream.TRIM_HORIZON.toString());
         result.setCredentialsProvider(new DefaultAWSCredentialsProviderChain());

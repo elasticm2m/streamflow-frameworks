@@ -16,12 +16,12 @@ public class AWSCredentialsResource extends ElasticBaseResource {
     private String secretKey;
     
     @Inject(optional=true)
-    public void setAccessKey(@Named("aws-access-key") String accessKey) {
+    public void setAccessKey(@Named("core-access-key") String accessKey) {
         this.accessKey = accessKey;
     }
     
     @Inject(optional=true)
-    public void setSecretKey(@Named("aws-secret-key") String secretKey) {
+    public void setSecretKey(@Named("core-secret-key") String secretKey) {
         this.secretKey = secretKey;
     }
 
