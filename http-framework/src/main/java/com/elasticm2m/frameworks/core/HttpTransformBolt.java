@@ -1,4 +1,4 @@
-package com.elasticm2m.frameworks.http;
+package com.elasticm2m.frameworks.core;
 
 import backtype.storm.multilang.BoltMsg;
 import backtype.storm.multilang.ShellMsg;
@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.Map;
 import java.util.Random;
 
-public class InvokeService extends ElasticBaseRichBolt {
+public class HttpTransformBolt extends ElasticBaseRichBolt {
 
     private String endpoint;
     private Random _rand = new Random();
