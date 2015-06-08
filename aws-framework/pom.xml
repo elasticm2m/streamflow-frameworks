@@ -76,7 +76,7 @@
 
         <dependency>
             <groupId>com.elasticm2m.streamflow</groupId>
-            <artifactId>frameworks-common</artifactId>
+            <artifactId>streamflow-common</artifactId>
             <version>0.2.0-SNAPSHOT</version>
         </dependency>
 
