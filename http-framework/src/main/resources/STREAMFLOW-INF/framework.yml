@@ -9,7 +9,7 @@ components:
     label: HTTP Transform
     type: storm-bolt
     description: Transforms a tuple by passing it to a http service
-    mainClass: com.elasticm2m.frameworks.core.HttpTransformBolt
+    mainClass: com.elasticm2m.frameworks.http.HttpTransformBolt
     properties:
       - name: endpoint
         label: Service endpoint URL
@@ -27,7 +27,7 @@ components:
     label: socket.io Spout
     type: storm-spout
     description: socket.io Spout
-    mainClass: com.elasticm2m.frameworks.core.SocketIoSpout
+    mainClass: com.elasticm2m.frameworks.http.SocketIoSpout
     properties:
       - name: endpoint
         label: Service endpoint URL
