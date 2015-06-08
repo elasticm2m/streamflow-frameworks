@@ -1,4 +1,4 @@
-package com.elasticm2m.frameworks.core;
+package com.elasticm2m.frameworks.http;
 
 import backtype.storm.multilang.BoltMsg;
 import backtype.storm.multilang.ShellMsg;
