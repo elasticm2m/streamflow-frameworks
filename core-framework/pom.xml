@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>streamflow-core-framework</artifactId>
-    <name>elasticm2m-processing-framework</name>
+    <name>streamflow-core-framework</name>
 
     <!-- =========================================================== -->
     <!-- Builds all plugin dependency libraries into a single jar    -->
@@ -73,6 +73,7 @@
     </build>
 
     <dependencies>
+
         <dependency>
             <groupId>com.elasticm2m.streamflow</groupId>
             <artifactId>frameworks-common</artifactId>
@@ -84,75 +85,6 @@
             <artifactId>streamflow-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.elasticm2m.sdk</groupId>
-            <artifactId>sdk-repository</artifactId>
-            <version>0.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.elasticm2m.sdk</groupId>
-            <artifactId>sdk-java-branding</artifactId>
-            <version>0.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.elasticm2m.sdk</groupId>
-            <artifactId>sdk-java-settings</artifactId>
-            <version>0.2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <version>1.9.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>amazon-kinesis-client</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.3.2</version>
-        </dependency>
-
-        <!-- Jackson JSON Parsing -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.jknack</groupId>
-            <artifactId>handlebars</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jknack</groupId>
-            <artifactId>handlebars-jackson2</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>18.0</version>
         </dependency>
 
         <dependency>
