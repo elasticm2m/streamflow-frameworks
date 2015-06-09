@@ -25,7 +25,7 @@ components:
     label: Random Sentence Generator
     type: storm-spout
     description: Produces a random sentence at a configurable rate
-      mainClass: com.elasticm2m.frameworks.core.RandomSentenceGenerator
+    mainClass: com.elasticm2m.frameworks.core.RandomSentenceGenerator
     properties:
       - name: sleep-millis
         label: Sleep (ms)
