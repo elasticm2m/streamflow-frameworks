@@ -16,6 +16,12 @@ components:
         type: string
         description: The HTTP URL for the service endpoint.
         required: true
+      - name: content-type
+        label: Content-Type
+        type: string
+        description: The value for the Content-Type to send in the HTTP request
+        required: true
+        defaultValue: application/json
     inputs:
       - key: default
         description: Generic
