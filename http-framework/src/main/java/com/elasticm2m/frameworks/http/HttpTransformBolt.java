@@ -8,12 +8,12 @@ import com.elasticm2m.frameworks.common.protocol.TupleAdapter;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.commons.io.IOUtils;
-import org.apache.storm.http.HttpEntity;
-import org.apache.storm.http.client.methods.CloseableHttpResponse;
-import org.apache.storm.http.client.methods.HttpPost;
-import org.apache.storm.http.entity.StringEntity;
-import org.apache.storm.http.impl.client.CloseableHttpClient;
-import org.apache.storm.http.impl.client.HttpClients;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
@@ -52,9 +52,8 @@ public class HttpTransformBolt extends ElasticBaseRichBolt {
         try {
             String body = tuple.getString(1);
             HttpPost httpPost = new HttpPost(endpoint);
-            httpPost.setEntity(new StringEntity(body));
-            // assume content-type is json?
             httpPost.setHeader("Content-Type", contentType);
+            httpPost.setEntity(new ByteArrayEntity(body.getBytes()));
             CloseableHttpResponse response = httpclient.execute(httpPost);
 
             HttpEntity responseEntity = response.getEntity();
