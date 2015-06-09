@@ -9,7 +9,7 @@ components:
      label: Kinesis Reader
      type: storm-spout
      description: Reads data from the specified Kinesis stream
-     mainClass: com.elasticm2m.frameworks.core.kinesis.KinesisReader
+     mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisReader
      icon: icons/aws.png
      properties:
        - name: kinesis-application-name
@@ -47,7 +47,7 @@ components:
      label: Kinesis Writer
      type: storm-bolt
      description: Writes data to the specified Kinesis stream
-     mainClass: com.elasticm2m.frameworks.core.kinesis.KinesisWriter
+     mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisWriter
      icon: icons/aws.png
      properties:
        - name: kinesis-stream-name
@@ -70,7 +70,7 @@ components:
      label: SQS Reader
      type: storm-spout
      description: Reads data from the specified SQS queue
-     mainClass: com.elasticm2m.frameworks.core.sqs.SqsReader
+     mainClass: com.elasticm2m.frameworks.aws.sqs.SqsReader
      icon: icons/aws.png
      properties:
        - name: sqs-queue-url
@@ -92,7 +92,7 @@ components:
      label: SQS Writer
      type: storm-bolt
      description: Writes data to the specified SQS queue
-     mainClass: com.elasticm2m.frameworks.core.sqs.SqsWriter
+     mainClass: com.elasticm2m.frameworks.aws.sqs.SqsWriter
      icon: icons/aws.png
      properties:
        - name: sqs-queue-url
