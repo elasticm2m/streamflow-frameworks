@@ -13,7 +13,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
@@ -75,7 +74,7 @@ public class HttpTransformBolt extends ElasticBaseRichBolt {
     HttpEntity toEntity(Object body) {
         HttpEntity result = null;
         if (body instanceof String) {
-            result = new StringEntity((String) body, contentType);
+            result = new ByteArrayEntity(((String) body).getBytes(), contentType);
         } else if (body instanceof byte[]) {
             result = new ByteArrayEntity((byte[]) body, contentType);
         } else {
