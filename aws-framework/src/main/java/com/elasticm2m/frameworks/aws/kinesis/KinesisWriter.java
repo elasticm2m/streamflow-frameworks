@@ -23,6 +23,7 @@ public class KinesisWriter extends ElasticBaseRichBolt {
     private String streamName;
     private String partitionKey;
     private AmazonKinesis kinesis;
+    private boolean logTuple = false;
 
     @Inject
     public void setStreamName(@Named("kinesis-stream-name") String streamName) {
@@ -32,6 +33,11 @@ public class KinesisWriter extends ElasticBaseRichBolt {
     @Inject
     public void setPartitionKey(@Named("kinesis-partition-key") String partitionKey) {
         this.partitionKey = partitionKey;
+    }
+
+    @Inject
+    public void setLogTupple(@Named("log-tuple") Boolean logTuple) {
+        this.logTuple = logTuple;
     }
 
     /*
@@ -44,12 +50,12 @@ public class KinesisWriter extends ElasticBaseRichBolt {
     @Override
     public void prepare(Map conf, TopologyContext topologyContext, OutputCollector collector) {
         super.prepare(conf, topologyContext, collector);
-        
+
         logger.info("Kinesis Writer: Stream Name = " + streamName
                 + ", Partition Key = " + partitionKey);
-        
+
         credentialsProvider = new DefaultAWSCredentialsProviderChain();
-        
+
         if (credentialsProvider == null) {
             kinesis = new AmazonKinesisAsyncClient();
         } else {
@@ -60,14 +66,19 @@ public class KinesisWriter extends ElasticBaseRichBolt {
     @Override
     public void execute(Tuple tuple) {
         try {
+            String body = tuple.getString(1);
             PutRecordRequest request = new PutRecordRequest()
                     .withStreamName(streamName)
                     .withPartitionKey(partitionKey)
-                    .withData(ByteBuffer.wrap(tuple.getString(1).getBytes()));
+                    .withData(ByteBuffer.wrap(body.getBytes()));
             kinesis.putRecord(request);
-            
-            logger.debug("Published record to kinesis");
-            
+
+            if (logTuple) {
+                logger.info(body);
+            } else {
+                logger.debug("Published record to kinesis");
+            }
+
             collector.ack(tuple);
         } catch (Exception ex) {
             logger.error("Error writing the entity to Kinesis:", ex);
