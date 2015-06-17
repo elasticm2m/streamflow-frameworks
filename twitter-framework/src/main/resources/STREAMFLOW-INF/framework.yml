@@ -1,0 +1,40 @@
+name: twitter-framework
+label: Twitter Framework
+version: ${project.version}
+description: Spouts and Bolts used to handle twitter streams
+
+components: 
+  - name: twitter-streaming
+    label: Twitter Streaming Spout
+    type: storm-spout
+    description: Twitter spout for handling various twitter streams.  Currently only supports sample stream
+    mainClass: com.elasticm2m.frameworks.twitter.TwitterStreamingSpout
+    icon: icons/twitter.png
+    properties:
+      - name: oauth-consumer-key
+        label: OAuth Consumer Key
+        type: text
+        description: Twitter OAuth Consumer Key
+        defaultValue:
+        required: true
+      - name: oauth-consumer-secret
+        label: OAuth Consumer Secret
+        type: text
+        description: Twitter OAuth Consumer Secret
+        defaultValue:
+        required: true
+      - name: oauth-access-token
+        label: OAuth Access Token
+        type: text
+        description: Twitter OAuth Access Token
+        defaultValue:
+        required: true
+      - name: oauth-access-token-secret
+        label: OAuth Access Token Secret
+        type: text
+        description: Twitter OAuth Access Token Secret
+        defaultValue:
+        required: true
+    outputs:
+      - key: default
+        description: Generic
