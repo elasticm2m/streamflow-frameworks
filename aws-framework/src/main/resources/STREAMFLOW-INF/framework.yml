@@ -109,3 +109,25 @@ components:
      inputs:
        - key: default
          description: Generic
+
+   - name: aws-dynamodb-bolt
+     label: DynamoDB Writer
+     type: storm-bolt
+     description: Writes data to the specified DynamoDB table
+     mainClass: com.elasticm2m.frameworks.aws.dynamodb.DynamoDBWriter
+     icon: icons/dynamodb.png
+     properties:
+       - name: dynamodb-table-name
+         label: Table Name
+         type: text
+         description: DynamoDB table to write records to
+         defaultValue:
+         required: true
+       - name: log-tupple
+         label: Log Tupple
+         type: boolean
+         required: true
+         defaultValue: false
+     inputs:
+       - key: default
+         description: Generic
