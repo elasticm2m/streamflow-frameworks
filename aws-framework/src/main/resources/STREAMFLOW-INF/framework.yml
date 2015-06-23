@@ -39,6 +39,11 @@ components:
          type: boolean
          description: Determines if the stream is reliable and only deletes fully processed messages
          defaultValue: false
+       - name: queue-capacity
+         label: Queue Capacity
+         type: integer
+         description: The capacity of the internal record queue.
+         defaultValue: 10000
      outputs:
        - key: default
          description: Generic
