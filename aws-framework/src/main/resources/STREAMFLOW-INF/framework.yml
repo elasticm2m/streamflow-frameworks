@@ -41,7 +41,7 @@ components:
          defaultValue: false
        - name: queue-capacity
          label: Queue Capacity
-         type: integer
+         type: number
          description: The capacity of the internal record queue.
          defaultValue: 10000
      outputs:
