@@ -80,7 +80,7 @@ public class KinesisWriter extends ElasticBaseRichBolt {
             }
 
             collector.ack(tuple);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             logger.error("Error writing the entity to Kinesis:", ex);
             collector.fail(tuple);
         }

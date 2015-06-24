@@ -72,7 +72,12 @@ public class ProcessingService extends AbstractExecutionThreadService implements
 
     @Override
     protected void run() throws Exception {
-        worker.run();
+        try {
+            worker.run();
+        }
+        catch(Throwable t){
+            logger.error("Exception in Kinesis worker ", t);
+        }
     }
 
     @Override
@@ -97,7 +102,10 @@ public class ProcessingService extends AbstractExecutionThreadService implements
                 logger.error("Invalid state exception:", e);
             } catch (ShutdownException e) {
                 logger.error("Error performing checkpoint on stream");
+            } catch (Throwable t){
+                logger.error("Unexpected exception ", t);
             }
+
         }
 
         @Override
