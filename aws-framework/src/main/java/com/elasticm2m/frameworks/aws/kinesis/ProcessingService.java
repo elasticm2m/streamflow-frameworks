@@ -21,12 +21,13 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
 
 @Singleton
 public class ProcessingService extends AbstractExecutionThreadService implements IRecordProcessorFactory {
 
     private final AWSCredentialsProvider credentialsProvider;
-    private final Queue<Record> queue;
+    private final BlockingQueue<Record> queue;
     private final String applicationName;
     private final String streamName;
     private InitialPositionInStream initialPosition;
@@ -35,7 +36,7 @@ public class ProcessingService extends AbstractExecutionThreadService implements
 
     @Inject
     public ProcessingService(AWSCredentialsProvider credentialsProvider,
-                             Queue<Record> queue, String applicationName, String streamName,
+                             BlockingQueue<Record> queue, String applicationName, String streamName,
                              InitialPositionInStream initialPosition, Logger logger) {
         this.credentialsProvider = credentialsProvider;
         this.queue = queue;
@@ -89,8 +90,7 @@ public class ProcessingService extends AbstractExecutionThreadService implements
         @Override
         public void processRecords(List<Record> records, IRecordProcessorCheckpointer checkPointer) {
             logger.info("Received records from stream: Count = " + records.size());
-
-            queue.addAll(records);
+            records.forEach(record -> queue.add(record));
             try {
                 checkPointer.checkpoint();
             } catch (InvalidStateException e) {
