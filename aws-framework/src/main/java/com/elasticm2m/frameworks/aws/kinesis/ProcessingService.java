@@ -19,7 +19,6 @@ import javax.inject.Singleton;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 
@@ -59,7 +58,7 @@ public class ProcessingService extends AbstractExecutionThreadService implements
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
-        
+
         if (initialPosition == null) {
             initialPosition = InitialPositionInStream.LATEST;
         }
@@ -90,7 +89,13 @@ public class ProcessingService extends AbstractExecutionThreadService implements
         @Override
         public void processRecords(List<Record> records, IRecordProcessorCheckpointer checkPointer) {
             logger.info("Received records from stream: Count = " + records.size());
-            records.forEach(record -> queue.add(record));
+            records.forEach(record -> {
+                try {
+                    queue.put(record);
+                } catch (InterruptedException e) {
+                    logger.error("Error writing record to queue", e);
+                }
+            });
             try {
                 checkPointer.checkpoint();
             } catch (InvalidStateException e) {
