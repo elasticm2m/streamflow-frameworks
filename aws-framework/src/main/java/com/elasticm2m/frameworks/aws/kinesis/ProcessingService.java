@@ -37,6 +37,7 @@ public class ProcessingService extends AbstractExecutionThreadService implements
     public ProcessingService(AWSCredentialsProvider credentialsProvider,
                              Queue<Record> queue, String applicationName, String streamName,
                              InitialPositionInStream initialPosition, Logger logger) {
+        super();
         this.credentialsProvider = credentialsProvider;
         this.queue = queue;
         this.applicationName = applicationName;
@@ -85,6 +86,16 @@ public class ProcessingService extends AbstractExecutionThreadService implements
         worker.shutdown();
     }
 
+    private void checkpointRecord(IRecordProcessorCheckpointer checkPointer, Record r){
+        try {
+            checkPointer.checkpoint(r);
+        } catch (InvalidStateException e) {
+            logger.error("Invalid state exception:", e);
+        } catch (ShutdownException e) {
+            logger.error("Error performing checkpoint on stream");
+        }
+    }
+
     class QueueingRecordProcessor implements IRecordProcessor {
 
         @Override
@@ -97,11 +108,7 @@ public class ProcessingService extends AbstractExecutionThreadService implements
 
             queue.addAll(records);
             try {
-                checkPointer.checkpoint();
-            } catch (InvalidStateException e) {
-                logger.error("Invalid state exception:", e);
-            } catch (ShutdownException e) {
-                logger.error("Error performing checkpoint on stream");
+                records.stream().forEach(r -> checkpointRecord(checkPointer, r));
             } catch (Throwable t){
                 logger.error("Unexpected exception ", t);
             }

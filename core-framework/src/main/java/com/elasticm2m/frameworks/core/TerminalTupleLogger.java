@@ -7,7 +7,14 @@ public class TerminalTupleLogger extends ElasticBaseRichBolt {
 
     @Override
     public void execute(Tuple tuple) {
-        logger.info(tuple.getStringByField("body"));
-        collector.ack(tuple);
+        try {
+            logger.info(tuple.getStringByField("body"));
+        }
+        catch(Throwable t){
+            logger.error("Error logging tuple: ");
+        }
+        finally{
+            collector.ack(tuple);
+        }
     }
 }

@@ -36,7 +36,7 @@ public class KinesisWriter extends ElasticBaseRichBolt {
     }
 
     @Inject
-    public void setLogTupple(@Named("log-tuple") Boolean logTuple) {
+    public void setLogTupple(@Named("log-tuple") boolean logTuple) {
         this.logTuple = logTuple;
     }
 
