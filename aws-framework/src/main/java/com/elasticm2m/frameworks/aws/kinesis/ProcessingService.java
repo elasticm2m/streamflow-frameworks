@@ -21,6 +21,8 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class ProcessingService extends AbstractExecutionThreadService implements IRecordProcessorFactory {
@@ -96,6 +98,16 @@ public class ProcessingService extends AbstractExecutionThreadService implements
         }
     }
 
+    private void checkpointBatch(IRecordProcessorCheckpointer checkPointer){
+        try {
+            checkPointer.checkpoint();
+        } catch (InvalidStateException e) {
+            logger.error("Invalid state exception:", e);
+        } catch (ShutdownException e) {
+            logger.error("Error performing checkpoint on stream");
+        }
+    }
+
     class QueueingRecordProcessor implements IRecordProcessor {
 
         @Override
@@ -105,6 +117,7 @@ public class ProcessingService extends AbstractExecutionThreadService implements
         @Override
         public void processRecords(List<Record> records, IRecordProcessorCheckpointer checkPointer) {
             logger.info("Received records from stream: Count = " + records.size());
+
             records.forEach(record -> {
                 try {
                     queue.put(record);
@@ -113,11 +126,12 @@ public class ProcessingService extends AbstractExecutionThreadService implements
                 }
             });
             try {
-                records.stream().forEach(r -> checkpointRecord(checkPointer, r));
-            } catch (Throwable t){
-                logger.error("Unexpected exception ", t);
+                checkPointer.checkpoint();
+            } catch (InvalidStateException e) {
+                logger.error("Invalid state exception:", e);
+            } catch (ShutdownException e) {
+                logger.error("Error performing checkpoint on stream");
             }
-
         }
 
         @Override
