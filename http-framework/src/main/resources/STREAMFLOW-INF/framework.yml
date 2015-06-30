@@ -29,6 +29,27 @@ components:
       - key: default
         description: Generic
 
+  - name: http-writer
+    label: HTTP Writer
+    type: storm-bolt
+    description: Write (POST) the body to a http service
+    mainClass: com.elasticm2m.frameworks.http.HttpWriterBolt
+    properties:
+      - name: endpoint
+        label: Service endpoint URL
+        type: string
+        description: The HTTP URL for the service endpoint.
+        required: true
+      - name: content-type
+        label: Content-Type
+        type: string
+        description: The value for the Content-Type to send in the HTTP request
+        required: true
+        defaultValue: application/json
+    inputs:
+      - key: default
+        description: Generic
+
   - name: socketio-spout
     label: socket.io Spout
     type: storm-spout
