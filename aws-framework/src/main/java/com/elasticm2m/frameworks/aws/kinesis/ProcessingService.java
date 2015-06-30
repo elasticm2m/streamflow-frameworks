@@ -21,6 +21,8 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class ProcessingService extends AbstractExecutionThreadService implements IRecordProcessorFactory {
@@ -37,6 +39,7 @@ public class ProcessingService extends AbstractExecutionThreadService implements
     public ProcessingService(AWSCredentialsProvider credentialsProvider,
                              BlockingQueue<Record> queue, String applicationName, String streamName,
                              InitialPositionInStream initialPosition, Logger logger) {
+        super();
         this.credentialsProvider = credentialsProvider;
         this.queue = queue;
         this.applicationName = applicationName;
@@ -72,12 +75,37 @@ public class ProcessingService extends AbstractExecutionThreadService implements
 
     @Override
     protected void run() throws Exception {
-        worker.run();
+        try {
+            worker.run();
+        }
+        catch(Throwable t){
+            logger.error("Exception in Kinesis worker ", t);
+        }
     }
 
     @Override
     protected void triggerShutdown() {
         worker.shutdown();
+    }
+
+    private void checkpointRecord(IRecordProcessorCheckpointer checkPointer, Record r){
+        try {
+            checkPointer.checkpoint(r);
+        } catch (InvalidStateException e) {
+            logger.error("Invalid state exception:", e);
+        } catch (ShutdownException e) {
+            logger.error("Error performing checkpoint on stream");
+        }
+    }
+
+    private void checkpointBatch(IRecordProcessorCheckpointer checkPointer){
+        try {
+            checkPointer.checkpoint();
+        } catch (InvalidStateException e) {
+            logger.error("Invalid state exception:", e);
+        } catch (ShutdownException e) {
+            logger.error("Error performing checkpoint on stream");
+        }
     }
 
     class QueueingRecordProcessor implements IRecordProcessor {
@@ -89,6 +117,7 @@ public class ProcessingService extends AbstractExecutionThreadService implements
         @Override
         public void processRecords(List<Record> records, IRecordProcessorCheckpointer checkPointer) {
             logger.info("Received records from stream: Count = " + records.size());
+
             records.forEach(record -> {
                 try {
                     queue.put(record);

@@ -7,9 +7,16 @@ public class PassthroughTupleLogger extends ElasticBaseRichBolt {
 
     @Override
     public void execute(Tuple tuple) {
-        logger.info(tuple.getStringByField("body"));
+        try{
+            logger.info(tuple.getStringByField("body"));
 
-        collector.emit(tuple, tuple.getValues());
-        collector.ack(tuple);
+            collector.emit(tuple, tuple.getValues());
+        }
+        catch(Throwable t){
+            logger.error("Error logging {}", t);
+        }
+        finally {
+            collector.ack(tuple);
+        }
     }
 }
