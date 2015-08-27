@@ -67,7 +67,7 @@ components:
          description: Kinesis stream to process records from
          defaultValue:
          required: true
-       - name: log-tupple
+       - name: log-tuple
          label: Log Tupple
          type: boolean
          required: true

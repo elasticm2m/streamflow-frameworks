@@ -3,24 +3,19 @@ package com.elasticm2m.frameworks.http;
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
 import com.elasticm2m.frameworks.common.base.ElasticBaseRichBolt;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import java.io.ByteArrayOutputStream;
-import java.util.List;
 import java.util.Map;
 
-public class HttpTransformBolt extends ElasticBaseRichBolt {
+public class HttpWriterBolt extends ElasticBaseRichBolt {
 
     private String endpoint;
     CloseableHttpClient httpclient;
@@ -53,17 +48,7 @@ public class HttpTransformBolt extends ElasticBaseRichBolt {
             Object body = tuple.getValue(1);
             HttpPost httpPost = new HttpPost(endpoint);
             httpPost.setEntity(toEntity(body));
-            CloseableHttpResponse response = httpclient.execute(httpPost);
-
-            HttpEntity responseEntity = response.getEntity();
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            IOUtils.copy(responseEntity.getContent(), out);
-
-            List<Object> values = new Values();
-            values.add(tuple.getValue(0));
-            values.add(new String(out.toByteArray()));
-            values.add(tuple.getValue(2));
-            collector.emit(tuple, values);
+            httpclient.execute(httpPost).close();
             collector.ack(tuple);
         } catch (Throwable e) {
             logger.error("Unable to process tuple", e);

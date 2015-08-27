@@ -31,6 +31,7 @@ public class KinesisReaderTest extends Assert {
         result.setLogger(LoggerFactory.getLogger(KinesisReader.class));
         result.setApplicationName("core-framework-unit-test");
         result.setStreamName("pre-process");
+        result.setQueueCapacity(50);
         result.setInitialPosition(InitialPositionInStream.TRIM_HORIZON.toString());
         result.setCredentialsProvider(new DefaultAWSCredentialsProviderChain());
         return result;
