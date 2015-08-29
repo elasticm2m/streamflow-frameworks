@@ -16,7 +16,7 @@ public class GroovyScriptTest extends Assert {
         String body = "{ \"id\": \"test\", \"type\": \"Feature\", \"properties\": {}}";
 
         GroovyShell shell = new GroovyShell();
-        Script compiledScript = shell.parse(new File("src/test/resources/transform_json.http"));
+        Script compiledScript = shell.parse(new File("src/test/resources/transform_json.groovy"));
         compiledScript.setProperty("body", body);
         Object result = compiledScript.run();
         assertNotNull(result);
