@@ -39,6 +39,7 @@
         <module>core-framework</module>
         <module>http-framework</module>
         <module>twitter-framework</module>
+        <module>groovy-framework</module>
     </modules>
 
     <repositories>
