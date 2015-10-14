@@ -6,6 +6,7 @@ import backtype.storm.tuple.Tuple;
 import com.elasticm2m.frameworks.common.base.ElasticBaseRichBolt;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
@@ -19,11 +20,17 @@ public class HttpWriterBolt extends ElasticBaseRichBolt {
 
     private String endpoint;
     CloseableHttpClient httpclient;
+    private String authorizationHeader;
     private ContentType contentType = ContentType.APPLICATION_JSON;
 
     @Inject
     public void setEndpoint(@Named("endpoint") String endpoint) {
         this.endpoint = endpoint;
+    }
+
+    @Inject
+    public void setAuthorizationHeader(@Named("authorization-header") String authorizationHeader) {
+        this.authorizationHeader = authorizationHeader;
     }
 
     @Inject
@@ -48,6 +55,9 @@ public class HttpWriterBolt extends ElasticBaseRichBolt {
             Object body = tuple.getValue(1);
             HttpPost httpPost = new HttpPost(endpoint);
             httpPost.setEntity(toEntity(body));
+            if (StringUtils.isNotBlank(authorizationHeader)) {
+                httpPost.addHeader("Authorization", authorizationHeader);
+            }
             httpclient.execute(httpPost).close();
             collector.ack(tuple);
         } catch (Throwable e) {
