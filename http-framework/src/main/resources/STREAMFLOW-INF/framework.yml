@@ -16,6 +16,11 @@ components:
         type: string
         description: The HTTP URL for the service endpoint.
         required: true
+      - name: authorization-header
+        label: Authorization Header
+        type: string
+        description: Authorization header to include with all requests
+        required: false
       - name: content-type
         label: Content-Type
         type: string
