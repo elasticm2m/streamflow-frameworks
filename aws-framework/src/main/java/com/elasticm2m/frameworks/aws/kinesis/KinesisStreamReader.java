@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class KinesisReader extends ElasticBaseRichSpout {
+public class KinesisStreamReader extends ElasticBaseRichSpout {
 
     private String applicationName;
     private String streamName;

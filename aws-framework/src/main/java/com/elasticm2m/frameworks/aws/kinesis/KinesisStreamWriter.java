@@ -17,7 +17,7 @@ import com.google.inject.name.Named;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-public class KinesisWriter extends ElasticBaseRichBolt {
+public class KinesisStreamWriter extends ElasticBaseRichBolt {
 
     private AWSCredentialsProvider credentialsProvider;
     private String streamName;
