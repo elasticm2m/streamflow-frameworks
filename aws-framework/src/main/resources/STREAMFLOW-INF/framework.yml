@@ -6,10 +6,10 @@ description: Spouts and Bolts used to integrate with various AWS products
 components:
 
    - name: aws-kinesis-spout
-     label: Kinesis Reader
+     label: Kinesis Stream Reader
      type: storm-spout
      description: Reads data from the specified Kinesis stream
-     mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisReader
+     mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisStreamReader
      icon: icons/aws.png
      properties:
        - name: kinesis-application-name
@@ -49,10 +49,10 @@ components:
          description: Generic
 
    - name: aws-kinesis-bolt
-     label: Kinesis Writer
+     label: Kinesis Stream Writer
      type: storm-bolt
      description: Writes data to the specified Kinesis stream
-     mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisWriter
+     mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisStreamWriter
      icon: icons/aws.png
      properties:
        - name: kinesis-stream-name
@@ -64,9 +64,36 @@ components:
        - name: kinesis-partition-key
          label: Partition Key
          type: text
-         description: Kinesis stream to process records from
+         description: Fixed partition key to use when putting records
          defaultValue:
          required: true
+       - name: log-tuple
+         label: Log Tupple
+         type: boolean
+         required: true
+         defaultValue: false
+     inputs:
+       - key: default
+         description: Generic
+
+   - name: aws-kinesis-firehose-bolt
+     label: Kinesis Firehose Writer
+     type: storm-bolt
+     description: Writes data to the specified Kinesis Firehose delivery stream
+     mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisFirehoseWriter
+     icon: icons/aws.png
+     properties:
+       - name: kinesis-delivery-stream-name
+         label: Delivery Stream Name
+         type: text
+         description: Kinesis Firehose delivery stream to push records to
+         defaultValue:
+         required: true
+       - name: use-record-separator
+         label: Separate records with a new line character
+         type: boolean
+         required: true
+         defaultValue: true
        - name: log-tuple
          label: Log Tupple
          type: boolean
