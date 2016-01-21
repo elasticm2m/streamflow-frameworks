@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class KinesisReader extends ElasticBaseRichSpout {
+public class KinesisStreamReader extends ElasticBaseRichSpout {
 
     private String applicationName;
     private String streamName;
@@ -25,8 +25,9 @@ public class KinesisReader extends ElasticBaseRichSpout {
     private boolean isReliable = false;
     private AWSCredentialsProvider credentialsProvider;
     private ProcessingService processingService;
+    private int queueCapacity;
 
-    private final LinkedBlockingQueue<Record> queue = new LinkedBlockingQueue<>();
+    private LinkedBlockingQueue<Record> queue;
 
     @Inject
     public void setApplicationName(@Named("kinesis-application-name") String applicationName) {
@@ -53,6 +54,11 @@ public class KinesisReader extends ElasticBaseRichSpout {
         this.credentialsProvider = credentialsProvider;
     }
 
+    @Inject
+    public void setQueueCapacity(@Named("queue-capacity") int queueCapacity) {
+        this.queueCapacity = queueCapacity;
+    }
+
     @Override
     public void open(Map conf, TopologyContext topologyContext, SpoutOutputCollector collector) {
         super.open(conf, topologyContext, collector);
@@ -64,6 +70,8 @@ public class KinesisReader extends ElasticBaseRichSpout {
 
         // Use the default credentials provider 
         credentialsProvider = new DefaultAWSCredentialsProviderChain();
+
+        queue = new LinkedBlockingQueue<>(queueCapacity);
 
         processingService = new ProcessingService(
                 credentialsProvider, queue, applicationName, streamName,

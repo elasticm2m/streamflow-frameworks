@@ -17,7 +17,7 @@ import com.google.inject.name.Named;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-public class KinesisWriter extends ElasticBaseRichBolt {
+public class KinesisStreamWriter extends ElasticBaseRichBolt {
 
     private AWSCredentialsProvider credentialsProvider;
     private String streamName;
@@ -36,7 +36,7 @@ public class KinesisWriter extends ElasticBaseRichBolt {
     }
 
     @Inject
-    public void setLogTupple(@Named("log-tuple") Boolean logTuple) {
+    public void setLogTupple(@Named("log-tuple") boolean logTuple) {
         this.logTuple = logTuple;
     }
 
@@ -80,7 +80,7 @@ public class KinesisWriter extends ElasticBaseRichBolt {
             }
 
             collector.ack(tuple);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             logger.error("Error writing the entity to Kinesis:", ex);
             collector.fail(tuple);
         }

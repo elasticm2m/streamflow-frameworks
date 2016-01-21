@@ -1,0 +1,25 @@
+name: groovy-framework
+label: Groovy Framework
+version: ${project.version}
+description: Spouts and Bolts used to handle event processing
+
+components: 
+
+  - name: groovy-transform
+    label: Groovy Transform
+    type: storm-bolt
+    description: Transforms a tuple by passing it to a groovy script
+    mainClass: com.elasticm2m.frameworks.groovy.GroovyTransformBolt
+    properties:
+      - name: script
+        label: Groovy Script
+        type: textarea
+        description: The Groovy Script to execute.  Should return the transformed body.
+        required: true
+    inputs:
+      - key: default
+        description: Generic
+    outputs:
+      - key: default
+        description: Generic
+

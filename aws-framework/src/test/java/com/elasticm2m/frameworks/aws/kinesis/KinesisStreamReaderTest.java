@@ -13,11 +13,11 @@ import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 
-public class KinesisReaderTest extends Assert {
+public class KinesisStreamReaderTest extends Assert {
 
     @Test
     public void testOpenClose() {
-        KinesisReader spout = createSpout();
+        KinesisStreamReader spout = createSpout();
         assertNotNull(spout);
         Map<String, Object> conf = new HashMap<>();
         TopologyContext context = mock(TopologyContext.class);
@@ -26,11 +26,12 @@ public class KinesisReaderTest extends Assert {
         spout.close();
     }
 
-    public static KinesisReader createSpout() {
-        KinesisReader result = new KinesisReader();
-        result.setLogger(LoggerFactory.getLogger(KinesisReader.class));
+    public static KinesisStreamReader createSpout() {
+        KinesisStreamReader result = new KinesisStreamReader();
+        result.setLogger(LoggerFactory.getLogger(KinesisStreamReader.class));
         result.setApplicationName("core-framework-unit-test");
         result.setStreamName("pre-process");
+        result.setQueueCapacity(50);
         result.setInitialPosition(InitialPositionInStream.TRIM_HORIZON.toString());
         result.setCredentialsProvider(new DefaultAWSCredentialsProviderChain());
         return result;
