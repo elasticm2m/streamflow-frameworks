@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.elasticm2m.streamflow</groupId>
         <artifactId>parent</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>streamflow-http-framework</artifactId>
