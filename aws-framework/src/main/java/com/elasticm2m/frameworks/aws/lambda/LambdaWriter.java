@@ -3,7 +3,6 @@ package com.elasticm2m.frameworks.aws.lambda;
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.lambda.AWSLambda;
@@ -16,27 +15,13 @@ import com.google.inject.name.Named;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Map;
 
-public class LambdaTransformBolt extends ElasticBaseRichBolt {
+public class LambdaWriter extends ElasticBaseRichBolt {
 
     private AWSLambda lambda;
     private String functionName;
     private AWSCredentialsProvider credentialsProvider;
-
-
-    @Override
-    public void prepare(Map conf, TopologyContext topologyContext, OutputCollector collector) {
-        super.prepare(conf, topologyContext, collector);
-        logger.info("Lambda Transform: Lambda Function Name = " + functionName);
-        credentialsProvider = new DefaultAWSCredentialsProviderChain();
-        if (credentialsProvider == null) {
-            lambda = new AWSLambdaClient();
-        } else {
-            lambda = new AWSLambdaClient(credentialsProvider);
-        }
-    }
 
     @Override
     public void execute(Tuple tuple) {
@@ -47,17 +32,22 @@ public class LambdaTransformBolt extends ElasticBaseRichBolt {
             request.setPayload(toString(body));
 
             InvokeResult result = lambda.invoke(request);
-            ByteBuffer payload = result.getPayload();
-
-            List<Object> values = new Values();
-            values.add(tuple.getValue(0));
-            values.add(toString(payload));
-            values.add(tuple.getValue(2));
-            collector.emit(tuple, values);
             collector.ack(tuple);
         } catch (Throwable e) {
             logger.error("Unable to process tuple", e);
             collector.fail(tuple);
+        }
+    }
+
+    @Override
+    public void prepare(Map conf, TopologyContext topologyContext, OutputCollector collector) {
+        super.prepare(conf, topologyContext, collector);
+        logger.info("Lambda Writer: Lambda Function Name = " + functionName);
+        credentialsProvider = new DefaultAWSCredentialsProviderChain();
+        if (credentialsProvider == null) {
+            lambda = new AWSLambdaClient();
+        } else {
+            lambda = new AWSLambdaClient(credentialsProvider);
         }
     }
 
