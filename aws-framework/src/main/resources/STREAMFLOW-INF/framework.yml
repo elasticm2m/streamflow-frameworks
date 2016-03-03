@@ -10,7 +10,7 @@ components:
      type: storm-spout
      description: Reads data from the specified Kinesis stream
      mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisStreamReader
-     icon: icons/aws.png
+     icon: icons/Analytics_Kinesis_Streams.png
      properties:
        - name: kinesis-application-name
          label: Application Name
@@ -53,7 +53,7 @@ components:
      type: storm-bolt
      description: Writes data to the specified Kinesis stream
      mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisStreamWriter
-     icon: icons/aws.png
+     icon: icons/Analytics_Kinesis_Streams.png
      properties:
        - name: kinesis-stream-name
          label: Stream Name
@@ -81,7 +81,7 @@ components:
      type: storm-bolt
      description: Writes data to the specified Kinesis Firehose delivery stream
      mainClass: com.elasticm2m.frameworks.aws.kinesis.KinesisFirehoseWriter
-     icon: icons/aws.png
+     icon: icons/Analytics_Kinesis_Firehose.png
      properties:
        - name: kinesis-delivery-stream-name
          label: Delivery Stream Name
@@ -108,7 +108,7 @@ components:
      type: storm-spout
      description: Reads data from the specified SQS queue
      mainClass: com.elasticm2m.frameworks.aws.sqs.SqsReader
-     icon: icons/aws.png
+     icon: icons/ApplicationServices_AmazonSQS_Queue.png
      properties:
        - name: sqs-queue-url
          label: SQS Queue URL
@@ -130,7 +130,7 @@ components:
      type: storm-bolt
      description: Writes data to the specified SQS queue
      mainClass: com.elasticm2m.frameworks.aws.sqs.SqsWriter
-     icon: icons/aws.png
+     icon: icons/ApplicationServices_AmazonSQS_Queue.png
      properties:
        - name: sqs-queue-url
          label: SQS Queue URL
@@ -142,12 +142,71 @@ components:
        - key: default
          description: Generic
 
+   - name: aws-lambda-transform-bolt
+     label: AWS Lambda Transform
+     type: storm-bolt
+     description: Transforms a tuple by passing it to an AWS Lambda function
+     mainClass: com.elasticm2m.frameworks.aws.lambda.LambdaTransform
+     icon: icons/Compute_Lambda.png
+     properties:
+       - name: lambda-function-name
+         label: Lambda Function name
+         type: text
+         description: The name of the Lambda Function to invoke
+         defaultValue:
+         required: true
+     inputs:
+       - key: default
+         description: Generic
+    outputs:
+      - key: default
+        description: Generic
+
+   - name: aws-lambda-writer-bolt
+     label: AWS Lambda Writer
+     type: storm-bolt
+     description: Write a tuple to a Lambda Function
+     mainClass: com.elasticm2m.frameworks.aws.lambda.LambdaWriter
+     icon: icons/Compute_Lambda.png
+     properties:
+       - name: lambda-function-name
+         label: Lambda Function name
+         type: text
+         description: The name of the Lambda Function to invoke
+         defaultValue:
+         required: true
+     inputs:
+       - key: default
+         description: Generic
+
    - name: aws-dynamodb-bolt
      label: DynamoDB Writer
      type: storm-bolt
      description: Writes data to the specified DynamoDB table
      mainClass: com.elasticm2m.frameworks.aws.dynamodb.DynamoDBWriter
-     icon: icons/dynamodb.png
+     icon: icons/Database_DynamoDB.png
+     properties:
+       - name: dynamodb-table-name
+         label: Table Name
+         type: text
+         description: DynamoDB table to write records to
+         defaultValue:
+         required: true
+       - name: log-tupple
+         label: Log Tupple
+         type: boolean
+         required: true
+         defaultValue: false
+     inputs:
+       - key: default
+         description: Generic
+
+   - name: aws-dynamodb-bolt
+     label: DynamoDB Writer
+     type: storm-bolt
+     description: Writes data to the specified DynamoDB table
+     mainClass: com.elasticm2m.frameworks.aws.dynamodb.DynamoDBWriter
+     icon: icons/Database_DynamoDB.png
      properties:
        - name: dynamodb-table-name
          label: Table Name
